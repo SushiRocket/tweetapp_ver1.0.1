@@ -7,7 +7,6 @@ import TweetList from './components/Tweetlist';
 function App() {
   const [tweets, setTweets] = useState([]);
 
-  // 初回レンダリング時に既存ツイート一覧を取得
   useEffect(() => {
     fetchTweets();
   }, []);
@@ -21,15 +20,17 @@ function App() {
         console.error('Error fetching tweets:', error);
       });
   };
+
   const handleTweetCreated = (newTweet) => {
+    // 受け取った新規ツイートを先頭に追加してステート更新
     setTweets([newTweet, ...tweets]);
   };
 
   return (
     <div>
       <h1>Tweet App</h1>
-      {/* 新規投稿フォーム：投稿完了時に handleTweetCreated が呼ばれる */}
       <TweetCreateForm onTweetCreated={handleTweetCreated} />
+      {/* TweetList には tweets を props で渡すだけ */}
       <TweetList tweets={tweets} />
     </div>
   );

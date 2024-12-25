@@ -1,9 +1,11 @@
+// frontend/src/TweetCreateForm.jsx
+
 import React, { useState } from "react";
 import axios from "axios";
 
 function TweetCreateForm({ onTweetCreated }) {
     // ツイート本文を管理するステート
-    const [text, setText] = useState("");
+    const [content, setContent] = useState("");
 
 
     // フォーム送信時に呼ばれる関数
@@ -12,23 +14,33 @@ function TweetCreateForm({ onTweetCreated }) {
         
         // axios.post(URL, 送信データ) でAPIにPOSTリクエスト
         axios.post('http://localhost:8000/api/tweets/', {
-            text: text, // DRF側の Tweetモデルのフィールド名が "text" のため合わせる
+            content: content, // DRF側の Tweetモデルのフィールド名が "text" のため合わせる
         })
         .then(response => {
             // 新しく作成されたTweetオブジェクトが返ってくる想定 (response.data)
             console.log("Created new tweet:", response.data);
 
             // フォームをクリア
-            setText("");
+            setContent("");
 
-             // 親コンポーネントから渡されたコールバック関数があれば呼び出す
-            // → 新規ツイートを親コンポーネント側の tweetsリスト に反映したい場合に使う
-            if (onTweetCreated) {
-                onTweetCreated(response.data);
-            }
         })
         .catch(error => {
             console.error("Failed to create tweet:", error);
+            
+            if (error.response) {
+                // サーバーから応答があったがステータスコードが2xxではない場合
+                console.error("Response data:", error.response.data);
+                console.error("Response status:", error.response.status);
+                console.error("Response headers:", error.response.headers);
+              } else if (error.request) {
+                // リクエストは送られたがレスポンスがない場合
+                console.error("Request:", error.request);
+              } else {
+                // リクエスト設定そのものに問題があった場合
+                console.error("Error message:", error.message);
+              }
+        
+              console.error("Config:", error.config);
         });
     };
 
@@ -37,12 +49,12 @@ function TweetCreateForm({ onTweetCreated }) {
             <input
                 type="text"
                 placeholder="What's Up?"
-                value={text}
-                onChange={(e) => setText(e.target.data)}
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
             />
             <button type="submit">Tweet</button>
         </form>
     );
 }
 
-export default TweetCreateForm;
+export default TweetCreateForm

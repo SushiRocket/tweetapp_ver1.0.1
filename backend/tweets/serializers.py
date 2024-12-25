@@ -1,7 +1,9 @@
+#backend/tweets/serializers.py
+
 from rest_framework import serializers
 from.models import Tweet
 
 class TweetSerializers(serializers.ModelSerializer):
-    class Mete:
+    class Meta:
         model = Tweet
-        fiels = ['id', 'content', 'created_at']
+        fields = ['id', 'content', 'created_at']
