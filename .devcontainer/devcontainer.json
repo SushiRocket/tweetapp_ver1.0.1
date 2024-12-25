@@ -1,0 +1,31 @@
+// .devcontainer/devcontainer.json
+
+{
+    "name": "TweetApp DevContainer",
+    "build": {
+      "dockerfile": "Dockerfile",
+      // Dockerfile のビルドコンテキスト。基本はプロジェクト全体をコンテキストにするため .. としておく
+      "context": ".."
+    },
+    // 使う拡張機能など
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "extensions": [
+                    "ms-python.python",
+                    "ms-python.vscode-pylance",
+                    "dbaeumer.vscode-eslint",
+                    "msjsdiag.vscode-react-native"
+                ]
+            }
+        }
+    },
+    // ホストのポートとコンテナのポートをフォワードする設定
+    "forwardPorts": [
+      8000, // Djangoサーバーポート
+      3000  // Reactの開発用ポート
+    ],
+    // コンテナ内のデフォルトユーザー。VSCode推奨の"vscode"ユーザーにします
+    "remoteUser": "vscode"
+  }
+  
