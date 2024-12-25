@@ -1,0 +1,16 @@
+# .gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+.env
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# その他
+.DS_Store
