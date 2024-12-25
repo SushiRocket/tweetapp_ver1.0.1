@@ -13,16 +13,16 @@ function TweetCreateForm({ onTweetCreated }) {
         e.preventDefault(); // ページリロードを防ぐ
         
         // axios.post(URL, 送信データ) でAPIにPOSTリクエスト
-        axios.post('http://localhost:8000/api/tweets/', {
-            content: content, // DRF側の Tweetモデルのフィールド名が "text" のため合わせる
-        })
+        axios.post('http://localhost:8000/api/tweets/', { content })
         .then(response => {
             // 新しく作成されたTweetオブジェクトが返ってくる想定 (response.data)
             console.log("Created new tweet:", response.data);
 
             // フォームをクリア
             setContent("");
-
+            if (onTweetCreated) {
+                onTweetCreated(response.data);
+            }
         })
         .catch(error => {
             console.error("Failed to create tweet:", error);

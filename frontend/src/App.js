@@ -23,7 +23,10 @@ function App() {
 
   const handleTweetCreated = (newTweet) => {
     // 受け取った新規ツイートを先頭に追加してステート更新
-    setTweets([newTweet, ...tweets]);
+    setTweets((prevTweets) => [newTweet, ...prevTweets]);
+
+    // サーバーの正確な状態を再取得（バックグラウンドでリストを最新化）
+    fetchTweets();
   };
 
   return (
