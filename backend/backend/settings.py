@@ -44,7 +44,17 @@ INSTALLED_APPS = [
     "tweets",
     "corsheaders",
     "rest_framework",
+    "rest_framework_simplejwt"
 ]
+
+RESt_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTauthentication'
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework_permission.IsAuthenticatedOrReadOnly'
+    ),
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

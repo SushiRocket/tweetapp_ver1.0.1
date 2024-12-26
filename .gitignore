@@ -14,3 +14,4 @@ yarn-error.log
 
 # その他
 .DS_Store
+db.sqlite3

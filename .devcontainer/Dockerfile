@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y curl \
 
 # Python
 RUN pip install --upgrade pip && \
-    pip install django djangorestframework django-cors-headers
+    pip install django djangorestframework django-cors-headers djangorestframework-simplejwt
 
 # フロントエンド用の npm install
 #   必要に応じて書く (必須ではない)
