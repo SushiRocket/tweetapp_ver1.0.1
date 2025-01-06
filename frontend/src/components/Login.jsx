@@ -32,7 +32,7 @@ function Login() {
                     <input
                         type='text'
                         value={username}
-                        onchange={(e) => setPassword(e.target.value)}
+                        onchange={(e) => setUsername(e.target.value)}
                         required
                     />
                 </div>

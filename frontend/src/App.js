@@ -1,7 +1,7 @@
 // frontend/src/App.js
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import { AuthProvider, AuthContext } from './Contexts/AuthContext';
+import { AuthProvider, AuthContext } from './contexts/AuthContext';
 import Login from './components/Login';
 import Register from './components/Register';
 import axios from 'axios';
@@ -60,8 +60,8 @@ function App() {
         { user ? (
           <>
             <TweetCreateForm />
-            <TweetLitst />
-            <LOgoutButton />
+            <TweetList />
+            <LogoutButton />
           </>
         ) : (
           <Navigate to ="/login" />
