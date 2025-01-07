@@ -25,14 +25,14 @@ function Login() {
     return (
         <div>
             <h2>Login</h2>
-            {error && <p styel={{ color: 'red'}}>{error}</p>}
+            {error && <p style={{ color: 'red'}}>{error}</p>}
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Username:</label>
                     <input
                         type='text'
                         value={username}
-                        onchange={(e) => setUsername(e.target.value)}
+                        onChange={(e) => setUsername(e.target.value)}
                         required
                     />
                 </div>

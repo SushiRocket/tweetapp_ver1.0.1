@@ -1,3 +1,5 @@
+// frontend/src/components/Login.jsx
+
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
@@ -12,7 +14,7 @@ const NavBar = () => {
                 {user ? (
                     <>
                         <span>Welcome, {user.username}!</span>
-                        <button OnClick={logout}>Logout</button>
+                        <button onClick={logout}>Logout</button>
                     </>
                 ) : (
                     <>

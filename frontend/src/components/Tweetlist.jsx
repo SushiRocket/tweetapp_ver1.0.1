@@ -1,17 +1,13 @@
-// frontend/src/components/TweetList.jsx
-import React, { useState, useEffect} from 'react';
+// frontend/src/components/TweetList.jsx]
+
+import React, { useState, useEffect, useCallback} from 'react';
 import axios from 'axios';
 
 function TweetList({ tweets, setTweets }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  //コンポーネントがマウントされたときにツイート一覧を取得
-  useEffect(() => {
-    fetchTweets();
-  }, []);
-
-  const fetchTweets = () => {
+  const fetchTweets = useCallback(() => {
     axios.get('http://localhost:8000/api/tweets/')
       .then(response => {
         setTweets(response.data);
@@ -22,7 +18,13 @@ function TweetList({ tweets, setTweets }) {
         setError('Failed to load tweets')
         setLoading(false);
       });
-  };
+  }, [setTweets]);
+
+  //コンポーネントがマウントされたときにツイート一覧を取得
+  useEffect(() => {
+    fetchTweets();
+  }, [fetchTweets]);
+
 
   if (loading) {
     return <p>Loading tweets...</p>
@@ -40,7 +42,7 @@ function TweetList({ tweets, setTweets }) {
       ) : (
         tweets.map(tweet => (
           <div key={tweet.id} style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '10px'}}>
-            <p>{tweet.text}</p>
+            <p>{tweet.content}</p>
             <small>By: {tweet.user.username} at {new Date(tweet.created_at).toLocaleString()}</small>
           </div>
         ))

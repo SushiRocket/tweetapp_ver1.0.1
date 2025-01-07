@@ -1,6 +1,7 @@
 // frontend/src/App.js
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './contexts/AuthContext';
 import Login from './components/Login';
 import Register from './components/Register';
@@ -18,7 +19,7 @@ function App() {
         <NavBar />
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/regidter" element={<Register />} />
+          <Route path="/register" element={<Register />} />
           <Route 
             path="/"
               element={
@@ -29,6 +30,7 @@ function App() {
           />
         </Routes>
       </Router>
+      <h1>Hello World!</h1>
     </AuthProvider>
   );
 }
@@ -39,11 +41,13 @@ const Home = ({ tweets, setTweets }) => {
   return (
     <div>
       <h1>Tweet App</h1>
-      {user && (
+      {user ? (
         <>
-          <TweetCreateForm />
+          <TweetCreateForm onTweetCreated={(newTweet)=> setTweets([...tweets, newTweet])} />
           <TweetList tweets={tweets} setTweets={setTweets} />
         </>
+      ) : (
+        <p>Loding...</p>
       )}
       <LogoutButton />
     </div>

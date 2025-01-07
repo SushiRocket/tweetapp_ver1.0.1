@@ -1,3 +1,5 @@
+// frontend/src/Register.jsx
+
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -8,14 +10,14 @@ function Register() {
     const [email, setEmail] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [error, seterror] = useState('');
+    const [error, setError] = useState('');
     const { register, login } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const userDate = { username, password, email, first_name: firstName, last_name: lastName };
-        register(userDate)
+        const userData = { username, password, email, first_name: firstName, last_name: lastName };
+        register(userData)
             .then(() => {
                 //自動的にログインする
                 return login(username, password);
@@ -25,7 +27,7 @@ function Register() {
             })
             .catch((err) => {
                 console.error(err);
-                seterror('Registration failed. Please try again.');
+                setError('Registration failed. Please try again.');
             });
     };
 
@@ -46,7 +48,7 @@ function Register() {
                 <div>
                     <label>Password:</label>
                     <input
-                        type="text"
+                        type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
@@ -55,7 +57,7 @@ function Register() {
                 <div>
                     <label>Email:</label>
                     <input
-                        type="text"
+                        type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />

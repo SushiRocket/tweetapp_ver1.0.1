@@ -3,7 +3,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-    baseURL: 'htttp://localhost:8000/api/',
+    baseURL: 'http://localhost:8000/api/',
 });
 
 //リクエストインターセクターでトークンをヘッダーに追加
@@ -11,7 +11,7 @@ const API = axios.create({
 API.interceptors.request.use((config) => {
     const token = localStorage.getItem('access_token');
     if (token) {
-        config.headers['Authorization'] = `Bearer${token}`;
+        config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;
 }, (error) => {
@@ -32,8 +32,8 @@ API.interceptors.response.use (
                         refresh: refresh_token,
                     });
                     localStorage.setItem('access_token', response.data.access);
-                    API.defaults.headers['Authorization'] = `Bearer${response.data.access}`;
-                    originalRequest.headers['Authorization'] = `Bearer${response.data.access}`;
+                    API.defaults.headers['Authorization'] = `Bearer ${response.data.access}`;
+                    originalRequest.headers['Authorization'] = `Bearer ${response.data.access}`;
                     return API(originalRequest);
                 } catch (err) {
                     console.error(`Refresh token failed:`, err);

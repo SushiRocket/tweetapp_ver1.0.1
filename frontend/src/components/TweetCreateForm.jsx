@@ -39,11 +39,11 @@ function TweetCreateForm({ onTweetCreated }) {
             if (error.response) {
                 // サーバーから応答があったがステータスコードが2xxではない場合
                 console.error("Response data:", error.response.data);
-                setError("Response data:", error.response.data);
+                setError(`Response data: ${JSON.stringify(error.response.data)}`);
                 console.error("Response status:", error.response.status);
-                setError("Response status:", error.response.status);
+                setError(`Response status: ${error.response.status}`);
                 console.error("Response headers:", error.response.headers);
-                setError("Response headers:", error.response.headers);
+                setError(`Response headers: ${JSON.stringify(error.response.headers)}`);
               } else if (error.request) {
                 // リクエストは送られたがレスポンスがない場合
                 console.error("Request:", error.request);
@@ -51,11 +51,11 @@ function TweetCreateForm({ onTweetCreated }) {
               } else {
                 // リクエスト設定そのものに問題があった場合
                 console.error("Error message:", error.message);
-                setError("Error message:", error.message);
+                setError(`Error message: ${error.message}`);
               }
         
               console.error("Config:", error.config);
-              setError("Config:", error.config);
+              setError(`Config: ${JSON.stringify(error.config)}`);
         });
     };
 
@@ -63,6 +63,7 @@ function TweetCreateForm({ onTweetCreated }) {
         <div>
             <h3>Create a new Tweet</h3>
             {error && <p style={{ color: 'red',}}>{error}</p>}
+            {user && <p>Logged in as: {user.username}</p>}
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
