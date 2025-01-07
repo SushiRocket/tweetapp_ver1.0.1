@@ -34,7 +34,7 @@ API.interceptors.response.use (
                     localStorage.setItem('access_token', response.data.access);
                     API.defaults.headers['Authorization'] = `Bearer${response.data.access}`;
                     originalRequest.headers['Authorization'] = `Bearer${response.data.access}`;
-                    return API(originalREquest);
+                    return API(originalRequest);
                 } catch (err) {
                     console.error(`Refresh token failed:`, err);
                     //リフレッシュトークンが無効な場合、ログアウトする
