@@ -7,6 +7,7 @@ import Register from './components/Register';
 import TweetCreateForm from './components/TweetCreateForm';
 import TweetList from './components/Tweetlist';
 import PrivateRoute from './components/PrivateRoute';
+import NavBar from './components/NavBar';
 
 function App() {
   const [tweets, setTweets] = useState([]);
@@ -14,6 +15,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
+        <NavBar />
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/regidter" element={<Register />} />
