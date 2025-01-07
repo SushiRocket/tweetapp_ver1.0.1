@@ -18,4 +18,34 @@ API.interceptors.request.use((config) => {
     return Promise.reject(error);
 });
 
+//レスポンスインターセプターでトークンのリフレッシュ
+API.interceptors.response.use (
+    response => response,
+    async error => {
+        const originalRequest = error.config;
+        if (error.response.status === 401 && !originalRequest._retry) {
+            originalRequest.retry = true;
+            const refresh_token = localStorage.getItem('refresh_token');
+            if (refresh_token) {
+                try {
+                    const response = await axios.post('http://localhost:8000/api/token/refresh/', {
+                        refresh: refresh_token,
+                    });
+                    localStorage.setItem('access_token', response.data.access);
+                    API.defaults.headers['Authorization'] = `Bearer${response.data.access}`;
+                    originalRequest.headers['Authorization'] = `Bearer${response.data.access}`;
+                    return API(originalREquest);
+                } catch (err) {
+                    console.error(`Refresh token failed:`, err);
+                    //リフレッシュトークンが無効な場合、ログアウトする
+                    localStorage.removeItem('access_token');
+                    localStorage.removeItem('refresh_token');
+                    window.location.href = '/login';
+                }
+            }
+        }
+        return Promise.reject(error);
+    }
+);
+
 export default API;
