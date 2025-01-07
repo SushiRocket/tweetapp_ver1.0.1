@@ -9,6 +9,8 @@ import TweetList from './components/Tweetlist';
 import PrivateRoute from './components/PrivateRoute';
 
 function App() {
+  const [tweets, setTweets] = useState([]);
+
   return (
     <AuthProvider>
       <Router>
@@ -19,7 +21,7 @@ function App() {
             path="/"
               element={
                 <PrivateRoute>
-                  <Home />
+                  <Home tweets={tweets} setTweets={setTweets} />
                 </PrivateRoute>
               }
           />
@@ -29,15 +31,19 @@ function App() {
   );
 }
 
-const Home = () => {
+const Home = ({ tweets, setTweets }) => {
   const { user } = React.useContext(AuthContext);
 
   return (
     <div>
       <h1>Tweet App</h1>
-        <TweetCreateForm />
-        <TweetList />
-        <LogoutButton />
+      {user && (
+        <>
+          <TweetCreateForm />
+          <TweetList tweets={tweets} setTweets={setTweets} />
+        </>
+      )}
+      <LogoutButton />
     </div>
   );
 };

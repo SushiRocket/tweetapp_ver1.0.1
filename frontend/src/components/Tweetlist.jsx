@@ -1,40 +1,50 @@
 // frontend/src/components/TweetList.jsx
-import React from 'react';
+import React, { useState, useEffect} from 'react';
+import axios from 'axios';
 
-const [tweets, setTweets] = useState([]);
+function TweetList({ tweets, setTweets }) {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-useEffect(() => {
-  fetchTweets();
-}, []);
+  //コンポーネントがマウントされたときにツイート一覧を取得
+  useEffect(() => {
+    fetchTweets();
+  }, []);
 
-const fetchTweets = () => {
-  axios.get('http://localhost:8000/api/tweets/')
-    .then(response => {
-      setTweets(response.data);
-    })
-    .catch(error => {
-      console.error('Error fetching tweets:', error);
-    });
-};
+  const fetchTweets = () => {
+    axios.get('http://localhost:8000/api/tweets/')
+      .then(response => {
+        setTweets(response.data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching tweets:', error);
+        setError('Failed to load tweets')
+        setLoading(false);
+      });
+  };
 
-const handleTweetCreated = (newTweet) => {
-  // 受け取った新規ツイートを先頭に追加してステート更新
-  setTweets((prevTweets) => [newTweet, ...prevTweets]);
+  if (loading) {
+    return <p>Loading tweets...</p>
+  }
 
-  // サーバーの正確な状態を再取得（バックグラウンドでリストを最新化）
-  fetchTweets();
-};
+  if (error) {
+    return <p style={{ color: 'red' }}>{error}</p>
+  }
 
-
-function TweetList({ tweets }) {
   return (
     <div>
-      <h1>Tweet List</h1>
-      {tweets.map((tweet) => (
-        <div key={tweet.id}>
-          {tweet.content}
-        </div>
-      ))}
+      <h2>Tweet List</h2>
+      {tweets.length === 0 ? (
+        <p>No tweets available.</p>
+      ) : (
+        tweets.map(tweet => (
+          <div key={tweet.id} style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '10px'}}>
+            <p>{tweet.text}</p>
+            <small>By: {tweet.user.username} at {new Date(tweet.created_at).toLocaleString()}</small>
+          </div>
+        ))
+      )}
     </div>
   );
 }
