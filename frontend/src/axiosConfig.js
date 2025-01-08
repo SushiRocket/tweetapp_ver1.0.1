@@ -23,6 +23,15 @@ API.interceptors.response.use (
     response => response,
     async error => {
         const originalRequest = error.config;
+        //ログインAPI(/api/token/)からのレスポンスが401ならリフレッシュしない
+        if (
+            error.response.status === 401 &&
+            originalRequest.url.includes('token')
+        ) {
+            //そのままエラーにする（usernameやpasswordのち）
+            return Promise.reject(error);
+        }
+        
         if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest.retry = true;
             const refresh_token = localStorage.getItem('refresh_token');
