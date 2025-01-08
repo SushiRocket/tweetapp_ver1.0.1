@@ -19,6 +19,9 @@ function TweetCreateForm({ onTweetCreated }) {
             setError('Tweet cannot be empty.');
             return;
         }
+
+        const token = localStorage.getItem('access_token');
+        console.log('Posting tweet with token', token)
         
         API.post('tweets/', { content })
             .then(response => {

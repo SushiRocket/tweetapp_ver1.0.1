@@ -12,6 +12,9 @@ API.interceptors.request.use((config) => {
     const token = localStorage.getItem('access_token');
     if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
+        console.log('Authorization header set:', `Bearer ${token}`);
+    } else {
+        console.log('No access_token found in localStorage.');
     }
     return config;
 }, (error) => {
@@ -26,12 +29,12 @@ API.interceptors.response.use (
         //ログインAPI(/api/token/)からのレスポンスが401ならリフレッシュしない
         if (
             error.response.status === 401 &&
-            originalRequest.url.includes('token')
+            originalRequest.url.includes('token/')
         ) {
             //そのままエラーにする（usernameやpasswordのち）
             return Promise.reject(error);
         }
-        
+
         if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest.retry = true;
             const refresh_token = localStorage.getItem('refresh_token');
