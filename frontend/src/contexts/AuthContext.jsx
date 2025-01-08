@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }) => {
                 })
                 .catch(error => {
                     console.error('Error fetching user:', error);
+                    console.error('Full error object:', error.toJSON());
                     setUser(null);
                 });               
         }
