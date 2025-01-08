@@ -26,8 +26,16 @@ function Register() {
                 navigate('/');
             })
             .catch((err) => {
-                console.error(err);
-                setError('Registration failed. Please try again.');
+                if (err.response) {
+                    console.error('Register Error:', err.response.data);
+                    setError(JSON.stringify(err.response.data));
+                } else if (err.request) {
+                    console.error('Register Error: No response from the server.');
+                    setError('No response from the server.');
+                } else {
+                    console.error('Register Error:', err.massage);
+                    setError(err.message);
+                }
             });
     };
 
