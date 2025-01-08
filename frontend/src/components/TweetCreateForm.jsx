@@ -1,7 +1,7 @@
 // frontend/src/TweetCreateForm.jsx
 
 import React, { useState, useContext } from "react";
-import axios from "axios";
+import API from "../axiosConfig";
 import { AuthContext } from "../contexts/AuthContext";
 
 
@@ -20,43 +20,42 @@ function TweetCreateForm({ onTweetCreated }) {
             return;
         }
         
-        // axios.post(URL, 送信データ) でAPIにPOSTリクエスト
-        axios.post('http://localhost:8000/api/tweets/', { content })
-        .then(response => {
-            // 新しく作成されたTweetオブジェクトが返ってくる想定 (response.data)
-            console.log("Created new tweet:", response.data);
+        API.post('tweets/', { content })
+            .then(response => {
+                // 新しく作成されたTweetオブジェクトが返ってくる想定 (response.data)
+                console.log("Created new tweet:", response.data);
 
-            // フォームをクリア
-            setContent('');
-            setError('')
-            if (onTweetCreated) {
-                onTweetCreated(response.data);
-            }
-        })
-        .catch(error => {
-            console.error("Failed to create tweet:", error);
-            
-            if (error.response) {
-                // サーバーから応答があったがステータスコードが2xxではない場合
-                console.error("Response data:", error.response.data);
-                setError(`Response data: ${JSON.stringify(error.response.data)}`);
-                console.error("Response status:", error.response.status);
-                setError(`Response status: ${error.response.status}`);
-                console.error("Response headers:", error.response.headers);
-                setError(`Response headers: ${JSON.stringify(error.response.headers)}`);
-              } else if (error.request) {
-                // リクエストは送られたがレスポンスがない場合
-                console.error("Request:", error.request);
-                setError("Request:", error.request);
-              } else {
-                // リクエスト設定そのものに問題があった場合
-                console.error("Error message:", error.message);
-                setError(`Error message: ${error.message}`);
-              }
-        
-              console.error("Config:", error.config);
-              setError(`Config: ${JSON.stringify(error.config)}`);
-        });
+                // フォームをクリア
+                setContent('');
+                setError('')
+                if (onTweetCreated) {
+                    onTweetCreated(response.data);
+                }
+            })
+            .catch(error => {
+                console.error("Failed to create tweet:", error);
+
+                if (error.response) {
+                    // サーバーから応答があったがステータスコードが2xxではない場合
+                    console.error("Response data:", error.response.data);
+                    setError(`Response data: ${JSON.stringify(error.response.data)}`);
+                    console.error("Response status:", error.response.status);
+                    setError(`Response status: ${error.response.status}`);
+                    console.error("Response headers:", error.response.headers);
+                    setError(`Response headers: ${JSON.stringify(error.response.headers)}`);
+                  } else if (error.request) {
+                    // リクエストは送られたがレスポンスがない場合
+                    console.error("Request:", error.request);
+                    setError("Request:", error.request);
+                  } else {
+                    // リクエスト設定そのものに問題があった場合
+                    console.error("Error message:", error.message);
+                    setError(`Error message: ${error.message}`);
+                  }
+              
+                  console.error("Config:", error.config);
+                  setError(`Config: ${JSON.stringify(error.config)}`);
+            });
     };
 
     return (
@@ -78,4 +77,4 @@ function TweetCreateForm({ onTweetCreated }) {
     );
 }
 
-export default TweetCreateForm
+export default TweetCreateForm;
