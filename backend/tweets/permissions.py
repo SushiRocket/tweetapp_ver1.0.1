@@ -1,6 +1,6 @@
 from rest_framework import permissions
 
-class IsOwnerOrReadOnly(permissions.BasePermissoions):
+class IsOwnerOrReadOnly(permissions.BasePermission):
     # オブジェクトの所有者だけが編集・削除できるようにするパーミッション
 
     def has_object_permissions(self, request, view, obj):
