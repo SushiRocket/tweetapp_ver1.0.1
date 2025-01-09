@@ -1,3 +1,5 @@
+//frontend/src/components/TweetEditForm.jsx
+
 import React, { useState } from 'react';
 import API from '../axiosConfig';
 
@@ -8,12 +10,12 @@ function TweetEditForm({ tweet, onUpdate, onCancel }) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!Text.trim()) {
+        if (!content.trim()) {
             setError('Tweet cannot be empty.');
             return;
         }
 
-        API.put(`tweets/${tweet.id}/`, content)
+        API.put(`tweets/${tweet.id}/`, { content })
             .then(response => {
                 onUpdate(response.data);
             })

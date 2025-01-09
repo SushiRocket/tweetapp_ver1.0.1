@@ -50,8 +50,7 @@ API.interceptors.response.use (
                 } catch (err) {
                     console.error(`Refresh token failed:`, err);
                     //リフレッシュトークンが無効な場合、ログアウトする
-                    localStorage.removeItem('access_token');
-                    localStorage.removeItem('refresh_token');
+                    localStorage.clear();
                     window.location.href = '/login';
                 }
             }

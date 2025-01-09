@@ -1,4 +1,4 @@
-// frontend/src/components/TweetList.jsx]
+// frontend/src/components/TweetList.jsx
 
 import React, { useState, useEffect, useCallback, useContext} from 'react';
 import API from '../axiosConfig';
@@ -40,7 +40,7 @@ function TweetList({ tweets, setTweets }) {
 
   const handleDelete = (id) => {
     if (window.confirm('Are you sure you want to delete this tweet?')) {
-      API.delete(`tweet/${id}`)
+      API.delete(`tweets/${id}/`)
         .then(() => {
           setTweets(tweets.filter( tweet => tweet.id !== id ));
           //filterメソッドで特定の要素だけを抽出してコールバック関数(setTweets)に渡す
@@ -71,7 +71,7 @@ function TweetList({ tweets, setTweets }) {
   return (
     <div>
       <h2>Tweet List</h2>
-      {tweets.length === 0 ? (
+      {tweets.length > 0 ? (
         tweets.map(tweet => (
           <div key={tweet.id} style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '10px'}}>
             <p>{tweet.content}</p>

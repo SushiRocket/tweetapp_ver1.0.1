@@ -1,18 +1,16 @@
 // frontend/src/App.js
 
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './contexts/AuthContext';
 import Login from './components/Login';
 import Register from './components/Register';
 import TweetCreateForm from './components/TweetCreateForm';
-import TweetList from './components/Tweetlist';
+import TweetList from './components/TweetList';
 import PrivateRoute from './components/PrivateRoute';
 import NavBar from './components/NavBar';
 
 function App() {
-  const [tweets, setTweets] = useState([]);
-
   return (
     <AuthProvider>
       <Router>
@@ -24,7 +22,7 @@ function App() {
             path="/"
               element={
                 <PrivateRoute>
-                  <Home tweets={tweets} setTweets={setTweets} />
+                  <Home />
                 </PrivateRoute>
               }
           />
@@ -35,16 +33,16 @@ function App() {
   );
 }
 
-const Home = ({ tweets, setTweets }) => {
-  const { user } = React.useContext(AuthContext);
+const Home = () => {
+  const { user } = useContext(AuthContext);
 
   return (
     <div>
       <h1>Tweet App</h1>
       {user ? (
         <>
-          <TweetCreateForm onTweetCreated={(newTweet)=> setTweets([...tweets, newTweet])} />
-          <TweetList tweets={tweets} setTweets={setTweets} />
+          <TweetCreateForm  />
+          <TweetList  />
         </>
       ) : (
         <p>Loding...</p>

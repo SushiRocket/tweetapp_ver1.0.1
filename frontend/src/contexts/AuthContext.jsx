@@ -4,7 +4,8 @@ import React, { createContext, useState, useEffect } from 'react';
 import API from '../axiosConfig';
 
 export const AuthContext = createContext({
-    user: { username: "TestUser"},
+    user: null,
+    isAuthenticating: true,
     login: () => {},
     register: () => {},
     logout: () => {},
@@ -12,6 +13,7 @@ export const AuthContext = createContext({
 
 export const AuthProvider = ({ children }) => {
     const[user, setUser] = useState(null);
+    const[isAuthenticating, setIsAuthenticating] = useState(true);
 
     useEffect(() => {
         console.log("AuthProvider mounted");
@@ -27,7 +29,12 @@ export const AuthProvider = ({ children }) => {
                     console.error('Error fetching user:', error);
                     console.error('Full error object:', error.toJSON());
                     setUser(null);
-                });               
+                })
+                .finally (() => {
+                    setIsAuthenticating(false);
+                });
+        } else {
+            setIsAuthenticating(false);
         }
     }, []);
 
@@ -59,7 +66,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, register, logout }}>
+        <AuthContext.Provider value={{ user, isAuthenticating, login, register, logout }}>
             { children }
         </AuthContext.Provider>
     );
