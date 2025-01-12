@@ -24,7 +24,7 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.followers.count()
     
     def get_following(self, obj):
-        return obj.followoing.count()
+        return obj.following.count()
 
     def create(self, validated_data):
         user = User.objects.create_user(
