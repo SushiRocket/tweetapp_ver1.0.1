@@ -4,32 +4,12 @@ import React, { useState, useEffect, useCallback, useContext} from 'react';
 import API from '../axiosConfig';
 import { AuthContext } from '../contexts/AuthContext';
 import TweetEditForm from './TweetEditForm';
+import useTweets from '../hooks/useTweets';
 
 function TweetList() {
-  coast [tweets, setTweets] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const { tweets, setTweets, loading, error} = useTweets();
   const [editingTweetId, setEditingTweetId] = useState(null);
   const { user } = useContext(AuthContext);
-
-  const fetchTweets = useCallback(() => {
-    API.get('tweets/')
-      .then(response => {
-        setTweets(response.data);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error('Error fetching tweets:', error);
-        setError('Failed to load tweets')
-        setLoading(false);
-      });
-  }, []);
-
-  //コンポーネントがマウントされたときにツイート一覧を取得
-  useEffect(() => {
-    fetchTweets();
-  }, [fetchTweets]);
-
 
   if (loading) {
     return <p>Loading tweets...</p>

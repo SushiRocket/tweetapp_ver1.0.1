@@ -2,7 +2,7 @@
 
 import React, { useState, useContext } from 'react';
 import { AuthContext} from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 function Login() {
     const [username, setUsername] = useState('');
@@ -48,7 +48,7 @@ function Login() {
                 <button type='submit'>Login</button>
             </form>
             <p>
-                Don't have an account? <a href="/register">Register here</a>
+                Don't have an account? <Link to="/register">Register</Link>
             </p>
         </div>
     );
