@@ -1,7 +1,7 @@
 // frontend/src/components/Home.jsx
 
 import React, { useContext } from 'react';
-import { AuthContext } from '../contexrts/AuthContext';
+import { AuthContext } from '../contexts/AuthContext';
 import TweetCreateForm from './TweetCreateForm';
 import TweetList from './TweetList';
 import LogoutButton from './LogoutButton';
