@@ -5,7 +5,8 @@ import API from '../axiosConfig';
 import { AuthContext } from '../contexts/AuthContext';
 import TweetEditForm from './TweetEditForm';
 
-function TweetList({ tweets, setTweets }) {
+function TweetList() {
+  coast [tweets, setTweets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [editingTweetId, setEditingTweetId] = useState(null);
@@ -22,7 +23,7 @@ function TweetList({ tweets, setTweets }) {
         setError('Failed to load tweets')
         setLoading(false);
       });
-  }, [setTweets]);
+  }, []);
 
   //コンポーネントがマウントされたときにツイート一覧を取得
   useEffect(() => {
@@ -58,7 +59,7 @@ function TweetList({ tweets, setTweets }) {
 
   const handleCancelEdit = () => {
     setEditingTweetId(null);
-  }
+  };
 
   const handleUpdate = (updateTweet) => {
     setTweets(tweets.map(tweet => (tweet.id === updateTweet.id ? updateTweet : tweet)));
@@ -66,7 +67,7 @@ function TweetList({ tweets, setTweets }) {
     //? updatedTweet : tweet
     //true場合はupdateTweetを返し、falseの場合はtweetを返す
     setEditingTweetId(null);
-  }
+  };
 
   return (
     <div>
