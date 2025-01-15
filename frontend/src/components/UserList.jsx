@@ -10,7 +10,7 @@ function UserList() {
         fetchUsers();
     }, []);
 
-    cost fetchUsers = () => {
+    const fetchUsers = () => {
         API.get('users/')
         .then(response => {
             setUsers(response.data);
