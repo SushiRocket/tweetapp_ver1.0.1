@@ -1,3 +1,5 @@
+// frontend/src/components/UserList.jsx
+
 import React, { useState, useEffect, useContext } from 'react';
 import API from '../axiosConfig';
 import { AuthContext } from '../contexts/AuthContext';
@@ -21,7 +23,7 @@ function UserList() {
     };
 
     const handleFollow = (id) => {
-        API.post('users/user/${id}/follow/')
+        API.post(`users/user/${id}/follow/`)
         .then(() => {
             fetchUsers(); //再取得して表示を更新
         })
@@ -31,7 +33,7 @@ function UserList() {
     };
 
     const handleUnfollow = (id) => {
-        API.delete('users/user/${id}/unfollow/')
+        API.delete(`users/user/${id}/unfollow/`)
         .then(() => {
             fetchUsers(); //再取得して表示を更新
         })
@@ -43,7 +45,8 @@ function UserList() {
     return (
         <div>
             <h2>User List</h2>
-            {users.map((u) => (
+            {users.length === 0 && <p>No users available.</p>}
+            {users.map(u => (
                 <div key={u.id} style={{ border: '1px solid #ccc', padding: '10px', margin: '10px 0' }}>
                     <p><strong>{u.username}</strong></p>
                     <p>Followers: {u.followers}</p>
