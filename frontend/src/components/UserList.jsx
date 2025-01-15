@@ -15,6 +15,7 @@ function UserList() {
     const fetchUsers = () => {
         API.get('users/')
         .then(response => {
+            console.log(response.data);
             setUsers(response.data);
         })
         .catch(error => {
