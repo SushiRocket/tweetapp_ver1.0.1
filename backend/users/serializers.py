@@ -21,10 +21,16 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id','username','password','email','first_name','last_name', 'followers', 'following')
 
     def get_followers(self, obj):
-        return obj.followers.count()
+        return {
+            "count": obj.followers.count(),
+            "users": [f.follower.id for f in obj.followers.all()]
+        }
     
     def get_following(self, obj):
-        return obj.following.count()
+        return {
+            "count": obj.following.count(),
+            "users": [f.following.id for f in obj.following.all()]
+        }
 
     def create(self, validated_data):
         user = User.objects.create_user(
