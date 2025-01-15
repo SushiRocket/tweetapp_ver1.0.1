@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth.models import User
 from.serializers import UserSerializer
+from.models import Follow
 
 # Create your views here.
 
@@ -20,19 +21,23 @@ class UserDetailView(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
+class UserListView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
     
 class FollowAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk=None):
         try:
-            user_to_follow = User.object.get(pk=pk)
+            user_to_follow = User.objects.get(pk=pk)
             if user_to_follow == request.user:
                 return Response({'error': 'You cannot follow yourself.' }, status=status.HTTP_400_BAD_REQUEST)
             
             follow, created = Follow.objects.get_or_create(
                 follower=request.user,
-                folloing=user_to_follow
+                following=user_to_follow
             )
             if not created:
                 return Response({'status': f'Already following.'}, status=status.HTTP_200_OK)
@@ -40,7 +45,7 @@ class FollowAPIView(APIView):
         except User.DoesNotExist:
             return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
         
-    def delete(self, request, pk=None):
+    def deleted(self, request, pk=None):
         try:
             user_to_unfollow = User.object.get(pk=pk)
             if user_to_unfollow == request.user:
