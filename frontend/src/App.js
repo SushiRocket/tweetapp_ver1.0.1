@@ -8,6 +8,7 @@ import Register from './components/Register';
 import Home from './components/Home';
 import PrivateRoute from './components/PrivateRoute';
 import NavBar from './components/NavBar';
+import UserList from './components/UserList';
 
 function App() {
   return (
@@ -17,14 +18,8 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route 
-            path="/"
-              element={
-                <PrivateRoute>
-                  <Home />
-                </PrivateRoute>
-              }
-          />
+          <Route path="/users" element={<UserList />} />
+          <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>}/>
         </Routes>
       </Router>
       <h1>Hello World!</h1>
