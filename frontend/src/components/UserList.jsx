@@ -15,7 +15,7 @@ function UserList() {
     const fetchUsers = () => {
         API.get('users/')
         .then(response => {
-            console.log(response.data);
+            console.log('API Response:', response.data);
             setUsers(response.data);
         })
         .catch(error => {
@@ -45,24 +45,27 @@ function UserList() {
 
     return (
         <div>
-            <h2>User List</h2>
-            {users.length === 0 && <p>No users available.</p>}
-            {users.map(u => (
-                <div key={u.id} style={{ border: '1px solid #ccc', padding: '10px', margin: '10px 0' }}>
-                    <p><strong>{u.username}</strong></p>
-                    <p>Followers: {u.followers}</p>
-                    <p>Following: {u.following}</p>
-                    {user && user.id !== u.id && (
-                        u.followers.includes(user.id) ? (
-                            <button onClick={() => handleUnfollow(u.id)}>Unfollow</button>
-                        ) : (
-                            <button onClick={() => handleFollow(u.id)}>Follow</button>
-                        )
-                    )}
-                </div>
-            ))}
+          <h2>User List</h2>
+          {Array.isArray(users) && users.length > 0 ? ( // usersが存在し、lengthが0以上の場合にmapを実行
+            users.map((u) => (
+              <div key={u.id} style={{ border: '1px solid #ccc', padding: '10px', margin: '10px 0' }}>
+                <p><strong>{u.username}</strong></p>
+                <p>Followers: {u.followers.count}</p>
+                <p>Following: {u.following.count}</p>
+                {user && user.id !== u.id && (
+                  u.followers.users.some((follower) => follower.id === user.id) ? (
+                    <button onClick={() => handleUnfollow(u.id)}>Unfollow</button>
+                  ) : (
+                    <button onClick={() => handleFollow(u.id)}>Follow</button>
+                  )
+                )}
+              </div>
+            ))
+          ) : (
+            <p>No users available.</p> // ユーザーがいない場合のメッセージ
+          )}
         </div>
-    );
+      );
 }
 
 export default UserList;
