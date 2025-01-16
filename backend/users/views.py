@@ -53,9 +53,9 @@ class FollowAPIView(APIView):
         except User.DoesNotExist:
             return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
         
-    def deleted(self, request, pk=None):
+    def delete(self, request, pk=None):
         try:
-            user_to_unfollow = User.object.get(pk=pk)
+            user_to_unfollow = User.objects.get(pk=pk)
             if user_to_unfollow == request.user:
                 return Response({'error': 'You cannot unfollow yourself.'}, status=status.HTTP_400_BAD_REQUEST)
             
