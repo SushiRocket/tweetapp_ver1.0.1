@@ -49,7 +49,7 @@ class LikeAPIView(APIView):
             like, created = Like.objects.get_or_create(user=request.user, tweet=tweet)
 
             if not created:
-                return Response({'message': 'You already liked this tweet.'}, status=status.HTTP_200_ok)
+                return Response({'message': 'You already liked this tweet.'}, status=status.HTTP_200_OK)
             
             return Response({'message': 'Tweet liked successfully.'}, status=status.HTTP_201_CREATED)
         except Tweet.DoesNotExist:
