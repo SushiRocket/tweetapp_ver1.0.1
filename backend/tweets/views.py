@@ -1,7 +1,7 @@
 #backend/tweets/views.py
 
-from rest_framework import viewsets
-from.models import Tweet,Comment
+from rest_framework import viewsets,status
+from.models import Tweet,Comment,Like
 from.serializers import TweetSerializer,CommentSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAuthenticated
 from.permissions import IsOwnerOrReadOnly
@@ -39,3 +39,31 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+class LikeAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, tweet_id):
+        try:
+            tweet = Tweet.objects.get(pk=tweet_id)
+            like, created = Like.objects.get_or_create(user=request.user, tweet=tweet)
+
+            if not created:
+                return Response({'message': 'You already liked this tweet.'}, status=status.HTTP_200_ok)
+            
+            return Response({'message': 'Tweet liked successfully.'}, status=status.HTTP_201_CREATED)
+        except Tweet.DoesNotExist:
+            return Response({'error': 'Tweet not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+    def delete(self, request, tweet_id):
+        try:
+            tweet = Tweet.objects.get(pk=tweet_id)
+            like = Like.objects.filter(user=request.user, tweet=tweet)
+
+            if not like.exists():
+                return Response({'error': 'You have not liked this tweet.'}, status=status.HTTP_200_OK)
+            
+            like.delete()
+            return Response({'message': 'Like removed successfully.'}, status=status.HTTP_200_OK)
+        except Tweet.DoesNotExist:
+            return Response({'error': 'Tweet not found.'}, status=status.HTTP_404_NOT_FOUND)
