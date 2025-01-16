@@ -5,6 +5,7 @@ import API from '../axiosConfig';
 import { AuthContext } from '../contexts/AuthContext';
 import TweetEditForm from './TweetEditForm';
 import useTweets from '../hooks/useTweets';
+import CommentList from './CommentList';
 
 function TweetList() {
   const { tweets, setTweets, loading, error} = useTweets();
@@ -59,6 +60,7 @@ function TweetList() {
             <small>
               By: {tweet.user.username} at {new Date(tweet.created_at).toLocaleString()}
             </small>
+            <CommentList tweetId={tweet.id} comments={tweet.comments} />
             {editingTweetId === tweet.id ? (
               <TweetEditForm tweet={tweet} onUpdate={handleUpdate} onCancel={handleCancelEdit} />
             ) : (
