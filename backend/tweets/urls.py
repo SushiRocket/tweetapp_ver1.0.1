@@ -2,10 +2,11 @@
 
 from django.urls import path,include
 from rest_framework import routers
-from.views import TweetViewSet,FeedView
+from.views import TweetViewSet,FeedView,CommentViewSet
 
 router = routers.DefaultRouter()
-router.register('tweets', TweetViewSet)
+router.register(r'tweets', TweetViewSet)
+router.register(r'comments', CommentViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
