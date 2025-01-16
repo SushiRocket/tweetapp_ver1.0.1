@@ -9,6 +9,7 @@ import Home from './components/Home';
 import PrivateRoute from './components/PrivateRoute';
 import NavBar from './components/NavBar';
 import UserList from './components/UserList';
+import Feed from './components/Feed';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/users" element={<UserList />} />
+          <Route path="/feed" element={<Feed />} />
           <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>}/>
         </Routes>
       </Router>
