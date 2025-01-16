@@ -1,6 +1,6 @@
 // frontend/src/components/TweetList.jsx
 
-import React, { useState, useEffect, useCallback, useContext} from 'react';
+import React, { useState, useContext} from 'react';
 import API from '../axiosConfig';
 import { AuthContext } from '../contexts/AuthContext';
 import TweetEditForm from './TweetEditForm';

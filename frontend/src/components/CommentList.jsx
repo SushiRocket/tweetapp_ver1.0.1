@@ -1,7 +1,10 @@
+// frontend/src/components/CommentList.jsx
+
 import React, { useState } from 'react';
 import API from '../axiosConfig';
 
-function CommentList({ tweetId, comments }) {
+function CommentList({ tweetId, comments = [] }) {
+    const [commentList, setCommentList] = useState(comments);
     const [newComment, setNewComment] = useState('');
 
     const handleCommentSubmit = (e) => {
@@ -9,7 +12,7 @@ function CommentList({ tweetId, comments }) {
         API.post('comments/', { tweet: tweetId, content: newComment })
             .then(() => {
                 setNewComment('');
-                window.location.reload();//コメント後にページをリロード
+                setCommentList([...commentList, Response.data]);
             })
             .catch((error) => {
                 console.error('Error posting comment:', error);
@@ -19,7 +22,7 @@ function CommentList({ tweetId, comments }) {
     return (
         <div>
             <h3>Comments</h3>
-            {comments.legth > 0 ? (
+            {comments.length > 0 ? (
                 comments.map((comment) => (
                     <div key={comment.id} style={{ marginBottom: '10px' }}>
                         <p><strong>{comment.user}</strong>: {comment.content}</p>
@@ -33,7 +36,7 @@ function CommentList({ tweetId, comments }) {
                 <textarea 
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
-                    row="3"
+                    rows="3"
                     placeholder='Write a comment...'
                     required
                 ></textarea>
