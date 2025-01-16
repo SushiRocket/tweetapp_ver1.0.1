@@ -14,6 +14,8 @@ const NavBar = () => {
                 {user ? (
                     <>
                         <span>Welcome, {user.username}!</span>
+                        <Link to="/feed">Feed</Link>
+                        <Link to="/users">Users</Link>
                         <button onClick={logout}>Logout</button>
                     </>
                 ) : (
