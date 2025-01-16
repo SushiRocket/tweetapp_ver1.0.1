@@ -9,14 +9,14 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username']
 
-class TweetSerializers(serializers.ModelSerializer):
+class TweetSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
 
     class Meta:
         model = Tweet
         fields = ['id', 'content', 'user', 'created_at']
 
-class CommentSerializers(serializers.ModelSerializer):
+class CommentSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(read_only=True)
 
     class Meta:

@@ -1,8 +1,8 @@
 #backend/tweets/views.py
 
 from rest_framework import viewsets
-from.models import Tweet
-from.serializers import TweetSerializers
+from.models import Tweet,Comment
+from.serializers import TweetSerializer,CommentSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAuthenticated
 from.permissions import IsOwnerOrReadOnly
 from rest_framework.views import APIView
@@ -12,7 +12,7 @@ from rest_framework.response import Response
 
 class TweetViewSet(viewsets.ModelViewSet):
     queryset = Tweet.objects.all().order_by('-created_at')
-    serializer_class = TweetSerializers
+    serializer_class = TweetSerializer
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
     #ツイートが作成される際に、シリアライザーに現在のリクエストユーザー (self.request.user) を自動的に設定します。
@@ -29,5 +29,13 @@ class FeedView(APIView):
         user = request.user
         following_users = user.user.following.value_list('following', flat=True)
         tweets = Tweet.objects.filter(user__id__in=following_users).order_by('-created_at')
-        serializer = TweetSerializers(tweets, many=True)
+        serializer = TweetSerializer(tweets, many=True)
         return Response(serializer.date)
+    
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all().orderby('created_at')
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
