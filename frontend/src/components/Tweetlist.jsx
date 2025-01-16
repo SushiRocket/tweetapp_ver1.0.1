@@ -50,6 +50,30 @@ function TweetList() {
     setEditingTweetId(null);
   };
 
+  const handleLike = (tweetId) => {
+    API.post(`tweets/${tweetId}/like/`)
+      .then(() => {
+        setTweets(tweets.map(tweet =>
+          tweet.id === tweetId ? {...tweet, likes_count: tweet.likes_count + 1 } : tweet
+        ));
+      })
+      .catch(error => {
+        console.error('Error liking tweet:', error);
+      });
+  };
+
+  const handleUnlike = (tweetId) => {
+    API.delete(`tweets/${tweetId}/unlike/`)
+      .then(() => {
+        setTweets(tweets.map(tweet =>
+          tweet.id === tweetId ? {...tweet, likes_count: tweet.likes_count - 1 } : tweet
+        ));
+      })
+      .catch(error => {
+        console.error('Error unlikeing tweet:', error);
+      });
+  };
+
   return (
     <div>
       <h2>Tweet List</h2>
@@ -71,6 +95,16 @@ function TweetList() {
                     <button onClick={() => handleDelete(tweet.id)}>Delete</button>
                   </div>
                 )}
+                <div>
+                  <p>
+                    likes: {tweet.likes_count}
+                    {tweet.likes && tweet.likes.some(like => like.user === user.id) ? (
+                      <button onClick={() => handleUnlike(tweet.id)}>Unlike</button>
+                    ) : (
+                      <button onClick={() => handleLike(tweet.id)}>Like</button>
+                    )}
+                  </p>
+                </div>
               </>
             )}
           </div>
