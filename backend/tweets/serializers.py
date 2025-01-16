@@ -1,7 +1,7 @@
 #backend/tweets/serializers.py
 
 from rest_framework import serializers
-from.models import Tweet,Comment
+from.models import Tweet,Comment,Like
 from django.contrib.auth.models import User
 
 class UserSerializer(serializers.ModelSerializer):
@@ -27,3 +27,8 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ('id', 'tweet', 'user', 'content', 'created_at')
+
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = ('id', 'user', 'tweet')
