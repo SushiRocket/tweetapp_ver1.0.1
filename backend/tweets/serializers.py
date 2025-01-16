@@ -12,14 +12,18 @@ class UserSerializer(serializers.ModelSerializer):
 class TweetSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
     comments = serializers.SerializerMethodField()
+    likes_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Tweet
-        fields = ('id', 'content', 'user', 'created_at', 'comments')
+        fields = ('id', 'content', 'user', 'created_at', 'comments', 'likes_count')
 
     def get_comments(self, obj):
         comments = obj.comments.all()
         return CommentSerializer(comments, many=True).data
+    
+    def get_likes_count(self, obj):
+        return obj.likes.count()
 
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(read_only=True)
