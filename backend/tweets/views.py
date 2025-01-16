@@ -3,7 +3,7 @@
 from rest_framework import viewsets
 from.models import Tweet
 from.serializers import TweetSerializers
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAuthenticated
 from.permissions import IsOwnerOrReadOnly
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -23,7 +23,7 @@ class FeedView(APIView):
 
     # フォローしているユーザーのツイートを取得
 
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         user = request.user
