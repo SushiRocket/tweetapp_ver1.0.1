@@ -12,8 +12,8 @@ class Tweet(models.Model):
         return f"{ self.user.username }: { self.content[:20] }"  # 管理画面などで表示するとき用
 
 class Comment(models.Model):
-    tweet = models.Foreiginkey(Tweet, on_delete=models.CASCADE, related_name="comments")
-    user = models.Foreiginkey(User, on_delete=models.CASCADE)
+    tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE, related_name="comments")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.CharField(max_length=280)
     created_at = models.DateTimeField(auto_now_add=True)
 
