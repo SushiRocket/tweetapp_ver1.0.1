@@ -53,9 +53,17 @@ function TweetList() {
   const handleLike = (tweetId) => {
     API.post(`tweets/${tweetId}/like/`)
       .then(() => {
-        setTweets(tweets.map(tweet =>
-          tweet.id === tweetId ? {...tweet, likes_count: tweet.likes_count + 1 } : tweet
-        ));
+        setTweets((prevTweets) =>
+          prevTweets.map((tweet) =>
+            tweet.id === tweetId
+              ? {
+                ...tweet,
+                likes_count: tweet.likes_count + 1,
+                user_has_liked: true,
+              }
+            : tweet
+          )
+        );
       })
       .catch(error => {
         console.error('Error liking tweet:', error);
@@ -65,9 +73,17 @@ function TweetList() {
   const handleUnlike = (tweetId) => {
     API.delete(`tweets/${tweetId}/unlike/`)
       .then(() => {
-        setTweets(tweets.map(tweet =>
-          tweet.id === tweetId ? {...tweet, likes_count: tweet.likes_count - 1 } : tweet
-        ));
+        setTweets((prevTweets) => 
+          prevTweets.map((tweet) =>
+            tweet.id === tweetId
+              ? {
+                  ...tweet,
+                  likes_count: Math.max(tweet.likes_count - 1, 0),
+                  user_has_liked: false,
+                }
+              : tweet
+          )
+        );
       })
       .catch(error => {
         console.error('Error unlikeing tweet:', error);
@@ -98,7 +114,7 @@ function TweetList() {
                 <div>
                   <p>
                     likes: {tweet.likes_count}
-                    {tweet.likes && tweet.likes.some(like => like.user === user.id) ? (
+                    {tweet.user_has_liked ? (
                       <button onClick={() => handleUnlike(tweet.id)}>Unlike</button>
                     ) : (
                       <button onClick={() => handleLike(tweet.id)}>Like</button>
