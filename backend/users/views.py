@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from django.contrib.auth.models import User
 from.serializers import UserSerializer
 from.models import Follow
+from notifications.models import Notification
 
 # Create your views here.
 
@@ -41,6 +42,13 @@ class FollowAPIView(APIView):
             )
             if not created:
                 return Response({'status': f'Already following.'}, status=status.HTTP_200_OK)
+            
+            Notification.objects.create(
+                recipient=user_to_follow,
+                sender=request.user,
+                message=f"{request.user.username} started following you."
+            )
+
             return Response({'status': f'You are now following{user_to_follow.username}.'}, status=status.HTTP_201_CREATED)
         except User.DoesNotExist:
             return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
