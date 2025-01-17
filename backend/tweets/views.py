@@ -7,6 +7,8 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAuthenticated
 from.permissions import IsOwnerOrReadOnly
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 # Create your views here.
 
@@ -17,7 +19,22 @@ class TweetViewSet(viewsets.ModelViewSet):
 
     #ツイートが作成される際に、シリアライザーに現在のリクエストユーザー (self.request.user) を自動的に設定します。
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        tweet = serializer.save(user=self.request.user)
+        # WebSocket に通知
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            "tweets",
+            {
+                'type': 'tweet_message',
+                'message': 'new_tweet',
+                'tweet': {
+                    'id': tweet.id,
+                    'content': tweet.content,
+                    'user': tweet.user.username,
+                    'created_at': str(tweet.created_at),
+                }
+            }
+        )
 
 class FeedView(APIView):
 
@@ -27,10 +44,10 @@ class FeedView(APIView):
 
     def get(self, request):
         user = request.user
-        following_users = user.user.following.value_list('following', flat=True)
+        following_users = user.user.following.values_list('following', flat=True)
         tweets = Tweet.objects.filter(user__id__in=following_users).order_by('-created_at')
         serializer = TweetSerializer(tweets, many=True)
-        return Response(serializer.date)
+        return Response(serializer.data)
     
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all().order_by('created_at')

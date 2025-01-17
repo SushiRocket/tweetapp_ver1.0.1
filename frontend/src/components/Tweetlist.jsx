@@ -1,6 +1,6 @@
 // frontend/src/components/TweetList.jsx
 
-import React, { useState, useContext} from 'react';
+import React, { useState, useEffect, useContext} from 'react';
 import API from '../axiosConfig';
 import { AuthContext } from '../contexts/AuthContext';
 import TweetEditForm from './TweetEditForm';
@@ -11,6 +11,39 @@ function TweetList() {
   const { tweets, setTweets, loading, error} = useTweets();
   const [editingTweetId, setEditingTweetId] = useState(null);
   const { user } = useContext(AuthContext);
+
+  //Websocketのセットアップ
+  useEffect(() => {
+    const socket = new WebSocket('ws://localhost:8000/ws/tweets/');
+
+    socket.onopen = () => {
+      console.log('WebSocket connection established.');
+    };
+
+    //サーバーからのメッセージ受信処理
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      console.log('WebSocket message received:', data);
+      if (data.type === 'tweet_message') {
+        setTweets((prevTweets) => [data.tweet, ...prevTweets]);
+      } else if (data.type === 'tweet_updated') {
+        setTweets((prevTweets) =>
+          prevTweets.filter((tweet) => tweet.id !== data.tweet.id)
+        );
+      }
+    };
+
+    socket.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    }
+
+    socket.onclose = () => {
+      console.log('WebSocket connection closed.');
+    };
+
+    //Websocket 切断時のクリーンアップ
+    return () => socket.close();
+  }, [setTweets]);
 
   if (loading) {
     return <p>Loading tweets...</p>
