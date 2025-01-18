@@ -17,3 +17,4 @@ yarn-error.log
 db.sqlite3
 backend/db.sqlite3
 .vscode/
+dump.rdb
