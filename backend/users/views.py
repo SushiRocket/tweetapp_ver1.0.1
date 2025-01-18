@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from.serializers import UserSerializer
 from.models import Follow
 from notifications.models import Notification
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly,AllowAny
 from tweets.models import Tweet
 from tweets.serializers import TweetSerializer
 
@@ -95,3 +95,12 @@ class UserProfileView(APIView):
             return Response(profile_data, status=200)
         except User.DoesNotExist:
             return Response({'error': 'User not found.'}, status=404)
+        
+class UserSearchView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        query = request.query_params.get('q', '') #クエリパラメータqの取得
+        users = User.objects.filter(username__icontains=query) #部分一致検索
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
