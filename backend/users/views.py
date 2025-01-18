@@ -7,6 +7,9 @@ from django.contrib.auth.models import User
 from.serializers import UserSerializer
 from.models import Follow
 from notifications.models import Notification
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from tweets.models import Tweet
+from tweets.serializers import TweetSerializer
 
 # Create your views here.
 
@@ -69,3 +72,26 @@ class FollowAPIView(APIView):
         except User.DoesNotExist:
             return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
         
+class UserProfileView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get(self, request, username):
+        try:
+            user = User.objects.get(username=username)
+            tweets = Tweet.objects.filter(user=user).order_by('created_at')
+            tweet_serializer = TweetSerializer(tweets, many=True)
+
+            profile_data = {
+                'username': user.username,
+                'email': user.email,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'date_joined': user.date_joined,
+                'tweets': tweet_serializer.data,
+                'followers': user.followers.count(),
+                'following': user.following.count(),
+            }
+
+            return Response(profile_data, status=200)
+        except User.DoesNotExist:
+            return Response({'error': 'User not found.'}, status=404)
