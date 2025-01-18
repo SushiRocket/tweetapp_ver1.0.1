@@ -6,6 +6,7 @@ import { AuthContext } from '../contexts/AuthContext';
 import TweetEditForm from './TweetEditForm';
 import useTweets from '../hooks/useTweets';
 import CommentList from './CommentList';
+import { Link } from 'react-router-dom';
 
 function TweetList() {
   const { tweets, setTweets, loading, error} = useTweets();
@@ -131,7 +132,7 @@ function TweetList() {
           <div key={tweet.id} style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '10px'}}>
             <p>{tweet.content}</p>
             <small>
-              By: {tweet.user.username} at {new Date(tweet.created_at).toLocaleString()}
+              <Link to={`/profile/${tweet.user.username}`}>By: {tweet.user.username}</Link> at {new Date(tweet.created_at).toLocaleString()}
             </small>
             <CommentList tweetId={tweet.id} comments={tweet.comments} />
             {editingTweetId === tweet.id ? (

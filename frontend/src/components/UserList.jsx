@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import API from '../axiosConfig';
 import { AuthContext } from '../contexts/AuthContext';
+import { Link } from 'react-router-dom';
 
 function UserList() {
     const [users, setUsers] = useState([]);
@@ -49,6 +50,7 @@ function UserList() {
           {Array.isArray(users) && users.length > 0 ? ( // usersが存在し、lengthが0以上の場合にmapを実行
             users.map((u) => (
               <div key={u.id} style={{ border: '1px solid #ccc', padding: '10px', margin: '10px 0' }}>
+                <p><Link to={`/profile/${u.username}`}>{u.username}</Link></p>
                 <p><strong>{u.username}</strong></p>
                 <p>Followers: {u.followers.count}</p>
                 <p>Following: {u.following.count}</p>

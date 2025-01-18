@@ -11,6 +11,7 @@ import NavBar from './components/NavBar';
 import UserList from './components/UserList';
 import Feed from './components/Feed';
 import Notifications from './components/Notifications';
+import Profile from './components/Profile';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/users" element={<UserList />} />
           <Route path="/feed" element={<Feed />} />
           <Route path="/notifications" element={<Notifications />} />
+          <Route path="/profile/:username" element={<Profile /> } />
           <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>}/>
         </Routes>
       </Router>
