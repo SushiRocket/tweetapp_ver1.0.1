@@ -7,6 +7,10 @@ venv/
 .venv/
 .env
 
+#Django
+media/
+staticfiles/
+
 # Node
 node_modules/
 npm-debug.log
@@ -18,3 +22,4 @@ db.sqlite3
 backend/db.sqlite3
 .vscode/
 dump.rdb
+*.log
