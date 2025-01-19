@@ -5,6 +5,7 @@ import { AuthContext } from '../contexts/AuthContext';
 import TweetCreateForm from './TweetCreateForm';
 import TweetList from './TweetList';
 import LogoutButton from './LogoutButton';
+import Trends from './Trends';
 
 const Home = () => {
     const { user } = useContext(AuthContext);
@@ -19,6 +20,9 @@ const Home = () => {
             </p>
             {user ? (
                 <>
+                <div className='w-1/3 pl-4'>
+                    <Trends />
+                </div>
                 <TweetCreateForm />
                 <TweetList />
                 <LogoutButton />

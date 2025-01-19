@@ -9,7 +9,7 @@ const NavBar = () => {
     const { user, logout } =useContext(AuthContext);
 
     return (
-        <nav className='bg-blue-600 dark:bg-slate-800 text-wite dark:text-gray-100 py-4 py x-8 flex justify-between items-center'>
+        <nav className='bg-blue-600 dark:bg-slate-800 text-white dark:text-gray-100 py-4 px-8 flex justify-between items-center'>
             <h2 className='text-xl font-bold'>
                 <Link to="/">Tweet App</Link>
             </h2>
