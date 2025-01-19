@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from.models import Follow
+from.models import Follow, Profile
 
 # Create your models here.
 
@@ -11,14 +11,20 @@ class FollowSerializer(serializers.ModelSerializer):
         model = Follow
         fields = ('id', 'follower', 'following', 'created_at')
 
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['profile_image']
+
 class UserSerializer(serializers.ModelSerializer):
     followers = serializers.SerializerMethodField()
     following = serializers.SerializerMethodField()
     password = serializers.CharField(write_only=True)
+    profile = ProfileSerializer(read_only=True)
 
     class Meta:
         model = User
-        fields = ('id','username','password','email','first_name','last_name', 'followers', 'following')
+        fields = ['id','username','password','email','first_name','last_name', 'followers', 'following','profile']
 
     def get_followers(self, obj):
         return {

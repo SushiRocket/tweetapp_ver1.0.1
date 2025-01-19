@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import API from '../axiosConfig';
+import ProfileImageUpload from './ProfileImageUpload';
 
 function Profile() {
     const { username } = useParams(); //URLパラメータからusernameを取得
@@ -10,11 +11,32 @@ function Profile() {
     console.log("UseParams output:", useParams());
     const [profile, setProfile] = useState(null);
 
+    const getProfileImageUrl = (relativePath) => {
+        if (!relativePath) return '';
+        return `http://localhost:8000${relativePath}`;
+    }
+
+    // プロフィール画像更新用関数
+    const handleImageUpdate = (newImage) => {
+        setProfile((prevProfile) => ({
+            ...prevProfile,
+            profile_image: getProfileImageUrl(newImage),
+        }));
+    };
+
+
     useEffect(() => {
         const fetchProfile = () => {
              API.get(`/profile/${username}/`)
                  .then((response) => {
-                     setProfile(response.data);
+                    // response.data.profile_image は "profile_images/xxx.jpg" などの相対パス
+                    const absoluteUrl = getProfileImageUrl(response.data.profile_image);
+
+                    // Stateにセットする際に絶対URLに置き換えておく
+                    setProfile({
+                        ...response.data,
+                        profile_image: absoluteUrl,
+                    });
                  })
                  .catch((error) => {
                      console.error('Error fetching profile:', error);
@@ -31,6 +53,10 @@ function Profile() {
     return (
         <div>
             <h1>{profile.username}'s Profile</h1>
+            <ProfileImageUpload
+                currentImage={profile.profile_image}
+                onUpdate={handleImageUpdate}
+            />
             <p>Email: {profile.email}</p>
             <p>First Name: {profile.first_name}</p>
             <p>Last Name: {profile.last_name}</p>
