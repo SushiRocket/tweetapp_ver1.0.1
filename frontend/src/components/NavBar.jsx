@@ -3,16 +3,18 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
+import DarkModeToggle from './DarkModeToggle';
 
 const NavBar = () => {
     const { user, logout } =useContext(AuthContext);
 
     return (
-        <nav className='bg-blue-600 text-wite py-4 py\x-8 flex justify-between items-center'>
+        <nav className='bg-blue-600 dark:bg-slate-800 text-wite dark:text-gray-100 py-4 py x-8 flex justify-between items-center'>
             <h2 className='text-xl font-bold'>
                 <Link to="/">Tweet App</Link>
             </h2>
             <div className='flex items-center gap-4'>
+                <DarkModeToggle />
                 {user ? (
                     <>
                         <span>Welcome, {user.username}!</span>
