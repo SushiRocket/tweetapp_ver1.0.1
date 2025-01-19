@@ -5,6 +5,7 @@ from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
 class TweetConsumer(AsyncJsonWebsocketConsumer):
     async def connect(self):
+        print(f"WebSocket connention attempt: {self.scope['client']}")
         #グループに参加
         await self.channel_layer.group_add(
             "tweets",
