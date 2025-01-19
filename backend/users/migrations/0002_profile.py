@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
                 (
                     "profile_image",
                     models.ImageField(
-                        default=users.models.default_profile_image,
+                        default='default_profile.png',
                         upload_to="profile_images/",
                     ),
                 ),
