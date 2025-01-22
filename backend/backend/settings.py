@@ -39,7 +39,6 @@ CORS_ALLOW_HEADERS = [
     "content-type",
     "accept",
     "origin",
-    # 必要に応じて追加
 ]
 
 from datetime import timedelta
@@ -63,6 +62,7 @@ INSTALLED_APPS = [
     "users",
     "notifications",
     "channels",
+    "dm",
 ]
 
 REST_FRAMEWORK = {
