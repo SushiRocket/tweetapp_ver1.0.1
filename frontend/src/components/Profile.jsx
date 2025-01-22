@@ -1,7 +1,7 @@
 // frontend/src/compornents/Profile.jsx
 
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import API from '../axiosConfig';
 import ProfileImageUpload from './ProfileImageUpload';
 
@@ -52,6 +52,9 @@ function Profile() {
 
     return (
         <div>
+            <Link to={`/dm/${profile.user_id}`} className='bg-blue-500 text-white px-3 py-1 rounded'>
+                Send Message
+            </Link>
             <h1>{profile.username}'s Profile</h1>
             <ProfileImageUpload
                 currentImage={profile.profile_image}
