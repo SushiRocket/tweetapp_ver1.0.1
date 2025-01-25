@@ -1,9 +1,12 @@
+# backend/dm/views.py
+
 from django.shortcuts import render
 from rest_framework import viewsets, permissions
 from rest_framework import status
 from rest_framework.response import Response
 from.models import DirectMessage
 from.serializers import DirectMessageSerializer
+from django.db import models
 
 # Create your views here.
 
