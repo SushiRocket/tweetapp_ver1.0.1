@@ -19,9 +19,9 @@ django.setup()
 
 from django.core.asgi import get_asgi_application
 from channels.routing import ProtocolTypeRouter, URLRouter
-from channels.auth import AuthMiddlewareStack
 import tweets.routing
 import dm.routing
+from middleware.channels_jwt_middleware import JWTAuthMiddleware
 
 print("ASGI starting... setting DJANGO_SETTINGS_MODULE to backend.settings")
 
@@ -32,7 +32,8 @@ print("Check => ", os.environ.get("DJANGO_SETTINGS_MODULE"))
 
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
-    "websocket": AuthMiddlewareStack(
+
+    "websocket": JWTAuthMiddleware(
         URLRouter(
             tweets.routing.websocket_urlpatterns +
             dm.routing.websocket_urlpatterns
