@@ -20,6 +20,12 @@ export const AuthProvider = ({ children }) => {
             .then(response => {
                 console.log("User fetched:", response.data);
                 setUser(response.data);
+
+                // user_idをlocalStorageに保存
+                if (response.data && response.data.id) {
+                    localStorage.setItem('user_id', response.data.id);
+                    console.log("User ID saved to localStorage:", response.data.id);
+                }
             })
             .catch(error => {
                 if (error.response && error.response.status === 401) {
