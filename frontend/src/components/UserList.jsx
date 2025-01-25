@@ -25,7 +25,7 @@ function UserList() {
     };
 
     const handleFollow = (id) => {
-        API.post(`users/user/${id}/follow/`)
+        API.post(`user/${id}/follow/`)
         .then(() => {
             fetchUsers(); //再取得して表示を更新
         })
@@ -35,7 +35,7 @@ function UserList() {
     };
 
     const handleUnfollow = (id) => {
-        API.delete(`users/user/${id}/unfollow/`)
+        API.delete(`user/${id}/unfollow/`)
         .then(() => {
             fetchUsers(); //再取得して表示を更新
         })
