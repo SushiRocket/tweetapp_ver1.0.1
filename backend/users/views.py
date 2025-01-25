@@ -85,6 +85,7 @@ class UserProfileView(APIView):
             tweet_serializer = TweetSerializer(tweets, many=True)
 
             profile_data = {
+                'user_id': user.id,
                 'username': user.username,
                 'email': user.email,
                 'first_name': user.first_name,
